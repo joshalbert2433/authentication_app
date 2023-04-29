@@ -12,17 +12,23 @@ import {
 export default function Home() {
 	return (
 		<main className="flex items-center justify-center px-4 py-6 sm:min-h-screen">
-			<div className="flex w-full flex-col justify-center gap-8  rounded-xl border-[#BDBDBD] sm:h-[545px] sm:w-[475px] sm:border-[1px] sm:px-16">
+			<div className="flex w-full flex-col justify-center gap-4  rounded-xl border-[#BDBDBD] sm:w-[475px] sm:border-[1px] sm:px-16 sm:py-12">
 				<Image
 					src="/devchallenges.svg"
 					alt="dev logo"
 					width={132}
 					height={132}
 				/>
-				<p className="text-[18px] font-[600]">Login</p>
+				<p className="text-[18px] font-semibold text-[#333333]">
+					Join thousands of learners from around the world
+				</p>
+				<p className="text-[16px] text-[#333333]">
+					Master web development by making real-life projects. There
+					are multiple paths for you to choose
+				</p>
 				<form
 					action="#"
-					className="flex w-full flex-col justify-between gap-4"
+					className="mt-4 flex w-full flex-col justify-between gap-4"
 					noValidate
 				>
 					<div className="relative">
@@ -53,11 +59,11 @@ export default function Home() {
 						/>
 					</div>
 					<button className="mt-2 w-full rounded-lg bg-[#2F80ED] py-1 text-[#FFFFFF]">
-						Login
+						Start coding now
 					</button>
 				</form>
 
-				<div className="flex flex-col items-center gap-4">
+				<div className="mt-6 flex flex-col items-center gap-6">
 					<p className="text-[14px] text-[#828282]">
 						or continue with these social profile
 					</p>
@@ -88,8 +94,8 @@ export default function Home() {
 						</div>
 					</div>
 					<p className="mt-2 text-[14px] text-[#828282]">
-						Don&#39;t have an account yet?{" "}
-						<span className="text-[#2D9CDB]">Register</span>
+						Already a member?{" "}
+						<span className="text-[#2D9CDB]">Login</span>
 					</p>
 				</div>
 			</div>
