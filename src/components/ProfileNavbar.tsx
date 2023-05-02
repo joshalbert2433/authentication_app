@@ -22,17 +22,20 @@ function ProfileNavbar() {
         height={132}
     /> */}
 				<div className="relative sm:flex sm:items-center sm:gap-4 ">
-					<img
-						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsynwv-5qtogtOwJbIjaPFJUmHpzhxgqIAug&usqp=CAU"
-						alt=""
-						className="h-[32px] w-[32px] rounded-lg"
+					<Image
+						src="/avatar.jpg"
+						alt="dev logo"
+						width={32}
+						height={32}
+						className="rounded-lg"
 					/>
+
 					<p className="hidden text-[12px] sm:block">Xanthe Neal</p>
 					<div className="hidden sm:block">
 						<AiFillCaretDown size={16} />
 					</div>
 
-					<div className="absolute -bottom-[170px] -left-[150px] z-50 hidden rounded-lg border bg-white p-2 sm:-bottom-[170px]  sm:-left-[35px]">
+					<div className="absolute -bottom-[170px] -left-[150px] z-50  rounded-lg border bg-white p-2 sm:-bottom-[170px]  sm:-left-[35px]">
 						<div className="">
 							<div className="flex w-[165px] items-center gap-4 rounded-lg bg-[#F2F2F2] px-4 py-3">
 								<FaUserCircle

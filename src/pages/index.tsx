@@ -11,7 +11,7 @@ import {
 
 export default function Home() {
 	return (
-		<main className="flex items-center justify-center px-4 py-6 sm:min-h-screen">
+		<main className="flex items-center justify-center px-4 py-6 sm:min-h-screen ">
 			<div className="flex w-full flex-col justify-center gap-8  rounded-xl border-[#BDBDBD] sm:h-[545px] sm:w-[475px] sm:border-[1px] sm:px-16">
 				<Image
 					src="/devchallenges.svg"

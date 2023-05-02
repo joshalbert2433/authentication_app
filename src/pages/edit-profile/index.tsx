@@ -1,11 +1,18 @@
 import ProfileNavbar from "@/components/ProfileNavbar";
 import React from "react";
+import Image from "next/image";
+import { IoMdCamera } from "react-icons/io";
+import { FiChevronLeft } from "react-icons/fi";
 
 function index() {
 	return (
 		<div>
 			<ProfileNavbar />
-			<div className="p-4">
+			<div className="mx-auto flex max-w-[850px] items-center gap-2 px-4 sm:px-0">
+				<FiChevronLeft className="fill-[#2D9CDB]" />
+				<p className="text-[#2D9CDB]">Back</p>
+			</div>
+			<div className="mx-auto mb-12 mt-6 max-w-[850px] p-4 sm:rounded-lg sm:border sm:border-[#E0E0E0] sm:p-8">
 				<div>
 					<h1 className="text-[24px]">Change Info</h1>
 					<p className="text-[13px] font-medium text-[#828282]">
@@ -14,17 +21,24 @@ function index() {
 				</div>
 
 				<div className="my-10 flex items-center gap-8">
-					<img
-						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsynwv-5qtogtOwJbIjaPFJUmHpzhxgqIAug&usqp=CAU"
-						alt=""
-						className="h-[72px] w-[72px] rounded-lg"
-					/>
+					<div className="relative">
+						<Image
+							src="/avatar.jpg"
+							height={200}
+							width={200}
+							alt="avatar image"
+							className="h-[72px] w-[72px] rounded-lg"
+						/>
+						<div className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] ">
+							<IoMdCamera className="fill-white" size={20} />
+						</div>
+					</div>
 
 					<p className="text-[13px] font-medium text-[#828282]">
 						CHANGE PHOTO
 					</p>
 				</div>
-				<form noValidate>
+				<form noValidate className="space-y-6">
 					<div className="flex flex-col">
 						<label htmlFor="name">Name</label>
 						<input
@@ -47,7 +61,7 @@ function index() {
 					<div className="flex flex-col">
 						<label htmlFor="phone">Phone</label>
 						<input
-							type="number"
+							type="text"
 							name="phone"
 							id="phone"
 							placeholder="Enter your phone number..."
