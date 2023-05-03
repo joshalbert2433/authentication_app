@@ -3,8 +3,13 @@ import React from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaUserCircle, FaUserFriends } from "react-icons/fa";
 import { IoMdExit } from "react-icons/io";
+import { signOut } from "next-auth/react";
 
 function ProfileNavbar() {
+	const signOutHandler = () => {
+		signOut({ callbackUrl: `${window.location.origin}/` });
+	};
+
 	return (
 		<div className="p-4">
 			<div className="flex justify-between sm:container sm:mx-auto">
@@ -28,9 +33,9 @@ function ProfileNavbar() {
 						<AiFillCaretDown size={16} />
 					</div>
 
-					<div className="absolute -bottom-[170px] -left-[150px] z-50  rounded-lg border bg-white p-2 sm:-bottom-[170px]  sm:-left-[35px]">
-						<div className="">
-							<div className="flex w-[165px] items-center gap-4 rounded-lg bg-[#F2F2F2] px-4 py-3">
+					<div className="absolute -bottom-[170px] -left-[150px] z-50  rounded-lg border bg-white p-2 sm:-bottom-[180px]  sm:-left-[35px]">
+						<div>
+							<button className="flex w-[165px] items-center gap-4 rounded-lg px-4 py-3 hover:bg-[#F2F2F2]">
 								<FaUserCircle
 									size={16}
 									className="fill-[#4F4F4F]"
@@ -38,8 +43,8 @@ function ProfileNavbar() {
 								<p className="text-[12px] font-medium text-[#4F4F4F]">
 									My Profile
 								</p>
-							</div>
-							<div className="flex w-[165px] items-center gap-4 px-4 py-3">
+							</button>
+							<button className="my-1 flex w-[165px] items-center gap-4 rounded-lg px-4 py-3 hover:bg-[#F2F2F2]">
 								<FaUserFriends
 									size={16}
 									className="fill-[#4F4F4F]"
@@ -47,16 +52,19 @@ function ProfileNavbar() {
 								<p className="text-[12px] font-medium text-[#4F4F4F]">
 									Group Chat
 								</p>
-							</div>
+							</button>
 						</div>
 						<div className="h-0.5 w-full bg-[#E0E0E0] opacity-50"></div>
-						<div className="flex items-center gap-4 px-4 py-3">
+						<button
+							className="mt-2 flex w-full items-center gap-4 rounded-lg px-4 py-3 hover:bg-[#F2F2F2]"
+							onClick={signOutHandler}
+						>
 							<IoMdExit size={16} className="fill-[#EB5757]" />
 
 							<p className="text-[12px] font-medium text-[#EB5757]">
 								Log out
 							</p>
-						</div>
+						</button>
 					</div>
 				</div>
 			</div>

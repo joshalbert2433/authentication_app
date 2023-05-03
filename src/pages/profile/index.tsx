@@ -2,6 +2,16 @@ import React from "react";
 import Image from "next/image";
 import ProfileNavbar from "@/components/ProfileNavbar";
 
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import type {
+	NextApiRequest,
+	NextApiResponse,
+	GetServerSideProps,
+	GetServerSidePropsContext,
+	GetServerSidePropsResult,
+} from "next";
+
 function index() {
 	return (
 		<div>
@@ -79,3 +89,26 @@ function index() {
 }
 
 export default index;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const session = await getServerSession(
+		context.req,
+		context.res,
+		authOptions
+	);
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}

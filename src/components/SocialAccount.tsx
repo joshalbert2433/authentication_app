@@ -8,11 +8,17 @@ import {
 import { useSession, signIn, signOut } from "next-auth/react";
 
 function SocialAccount() {
+	const googleSigninHandler = async () => {
+		signIn("google", {
+			callbackUrl: `${window.location.origin}/profile`,
+		});
+	};
+
 	return (
 		<div className="flex gap-5">
 			<div
 				className="cursor-pointer rounded-full border border-[#828282] p-2 hover:border-[#2F80ED] [&>*:first-child]:hover:fill-[#2F80ED]"
-				onClick={() => signIn("google")}
+				onClick={googleSigninHandler}
 			>
 				<AiOutlineGoogle size={18} className="fill-[#828282] " />
 			</div>
