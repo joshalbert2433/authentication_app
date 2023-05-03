@@ -2,12 +2,9 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { MdEmail } from "react-icons/md";
 import { IoMdLock } from "react-icons/io";
-import {
-	AiFillFacebook,
-	AiOutlineGithub,
-	AiOutlineTwitter,
-	AiOutlineGoogle,
-} from "react-icons/ai";
+
+import Link from "next/link";
+import SocialAccount from "@/components/SocialAccount";
 
 export default function Home() {
 	return (
@@ -67,35 +64,15 @@ export default function Home() {
 					<p className="text-[14px] text-[#828282]">
 						or continue with these social profile
 					</p>
-					<div className="flex gap-5">
-						<div className="rounded-full border border-[#828282] p-2 ">
-							<AiOutlineGoogle
-								size={18}
-								className="fill-[#828282]"
-							/>
-						</div>
-						<div className="rounded-full border border-[#828282] p-2 ">
-							<AiFillFacebook
-								size={18}
-								className="fill-[#828282]"
-							/>
-						</div>
-						<div className="rounded-full border border-[#828282] p-2 ">
-							<AiOutlineTwitter
-								size={18}
-								className="fill-[#828282]"
-							/>
-						</div>
-						<div className="rounded-full border border-[#828282] p-2 ">
-							<AiOutlineGithub
-								size={18}
-								className="fill-[#828282]"
-							/>
-						</div>
-					</div>
+					<SocialAccount />
 					<p className="mt-2 text-[14px] text-[#828282]">
 						Already a member?{" "}
-						<span className="text-[#2D9CDB]">Login</span>
+						<Link
+							href="/"
+							className="text-[#2D9CDB] hover:underline"
+						>
+							Login
+						</Link>
 					</p>
 				</div>
 			</div>

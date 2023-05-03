@@ -14,13 +14,6 @@ function ProfileNavbar() {
 					width={132}
 					height={132}
 				/>
-
-				{/* <Image
-        src="/devchallenges.svg"
-        alt="dev logo"
-        width={132}
-        height={132}
-    /> */}
 				<div className="relative sm:flex sm:items-center sm:gap-4 ">
 					<Image
 						src="/avatar.jpg"
