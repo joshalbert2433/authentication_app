@@ -40,8 +40,16 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   accounts      Account[]
   sessions      Session[]
+}
+
+model UserTest {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
 }
 
 model VerificationToken {

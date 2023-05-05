@@ -6,12 +6,8 @@ import Link from "next/link";
 import SocialAccount from "@/components/SocialAccount";
 import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
-import Axios from "axios";
 
 export default function Home() {
-	const router = useRouter();
-
 	const { data: session } = useSession();
 	const [email, setEmail] = useState<String>("");
 	const [password, setPassword] = useState<String>("");
@@ -20,38 +16,20 @@ export default function Home() {
 		console.log(session);
 	}
 
-	const loginCredentialsHandler = async (
-		e: React.FormEvent<HTMLFormElement>
-	) => {
+	const loginCredentialsHandler = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		const callbackUrl = (router.query?.callbackUrl as string) ?? "/profile";
-
 		console.log("hello");
 		signIn("credentials", {
-			callbackUrl: `${window.location.origin}/profile`,
-			// redirect: false,
+			// callbackUrl: `${window.location.origin}/profile`,
+			redirect: false,
 			email,
 			password,
 		});
-
-		// router.push("/profile");
-	};
-
-	const getSessionHandler = async () => {
-		try {
-			const { data } = await Axios.get(
-				"http://localhost:3000/api/session"
-			);
-
-			console.log(data);
-		} catch (error) {
-			console.log(error);
-		}
 	};
 
 	return (
 		<main className="flex items-center justify-center px-4 py-6 sm:min-h-screen ">
-			<button onClick={getSessionHandler}>get session</button>
+			<h1 className="text-2xl">AUTH SIGNIN</h1>
 			<div className="flex w-full flex-col justify-center gap-8  rounded-xl border-[#BDBDBD] sm:h-[545px] sm:w-[475px] sm:border-[1px] sm:px-16">
 				<Image
 					src="/devchallenges.svg"

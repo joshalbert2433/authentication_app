@@ -7,7 +7,8 @@ import { signOut } from "next-auth/react";
 
 function ProfileNavbar() {
 	const signOutHandler = () => {
-		signOut({ callbackUrl: `${window.location.origin}/` });
+		signOut();
+		// signOut({ callbackUrl: `${window.location.origin}/` });
 	};
 
 	return (
