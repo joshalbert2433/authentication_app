@@ -1,8 +1,5 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import { MdEmail } from "react-icons/md";
-import { IoMdLock } from "react-icons/io";
-
+import SignupForm from "../../components/SignupForm";
 import Link from "next/link";
 import SocialAccount from "@/components/SocialAccount";
 
@@ -23,42 +20,8 @@ export default function Home() {
 					Master web development by making real-life projects. There
 					are multiple paths for you to choose
 				</p>
-				<form
-					action="#"
-					className="mt-4 flex w-full flex-col justify-between gap-4"
-					noValidate
-				>
-					<div className="relative">
-						<input
-							type="email"
-							name="email"
-							id="email"
-							placeholder="Email"
-							className="w-full rounded-lg border px-3 py-2 pl-11"
-						/>
 
-						<MdEmail
-							size={24}
-							className="absolute inset-0 left-3 top-[50%] -translate-y-[50%] text-[#828282]"
-						/>
-					</div>
-					<div className="relative">
-						<input
-							type="password"
-							name="password"
-							id="password"
-							placeholder="Password"
-							className="w-full rounded-lg border px-3 py-2 pl-11"
-						/>
-						<IoMdLock
-							size={24}
-							className="absolute inset-0 left-3 top-[50%] -translate-y-[50%] text-[#828282]"
-						/>
-					</div>
-					<button className="mt-2 w-full rounded-lg bg-[#2F80ED] py-1 text-[#FFFFFF]">
-						Start coding now
-					</button>
-				</form>
+				<SignupForm />
 
 				<div className="mt-6 flex flex-col items-center gap-6">
 					<p className="text-[14px] text-[#828282]">

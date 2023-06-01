@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import ProfileNavbar from "@/components/ProfileNavbar";
-
+import { useSession, signIn, signOut } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+import Link from "next/link";
 import type {
 	NextApiRequest,
 	NextApiResponse,
@@ -12,7 +13,10 @@ import type {
 	GetServerSidePropsResult,
 } from "next";
 
-function index() {
+function Index() {
+	const { data: session } = useSession();
+
+	console.log(session);
 	return (
 		<div>
 			<ProfileNavbar />
@@ -30,18 +34,24 @@ function index() {
 							Some info may be visible to other people
 						</p>
 					</div>
-					<button className="rounded-lg border border-[#828282] px-7 py-1.5 text-[16px] font-medium text-[#828282]">
+					<Link
+						href="/edit-profile"
+						className="rounded-lg border border-[#828282] px-7 py-1.5 text-[16px] font-medium text-[#828282]"
+					>
 						Edit
-					</button>
+					</Link>
 				</div>
 				<div className="border-b sm:border-t">
 					<div className="flex items-center justify-between p-4 sm:justify-start sm:px-12">
 						<p className="text-[13px] font-medium text-[#BDBDBD] sm:w-[250px]">
 							PHOTO
 						</p>
-						<img
-							src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsynwv-5qtogtOwJbIjaPFJUmHpzhxgqIAug&usqp=CAU"
-							alt=""
+
+						<Image
+							src="/avatar.jpg"
+							height={200}
+							width={200}
+							alt="avatar image"
 							className="h-[72px] w-[72px] rounded-lg"
 						/>
 					</div>
@@ -88,7 +98,7 @@ function index() {
 	);
 }
 
-export default index;
+export default Index;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const session = await getServerSession(

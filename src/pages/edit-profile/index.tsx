@@ -3,15 +3,19 @@ import React from "react";
 import Image from "next/image";
 import { IoMdCamera } from "react-icons/io";
 import { FiChevronLeft } from "react-icons/fi";
+import Link from "next/link";
 
 function index() {
 	return (
 		<div>
 			<ProfileNavbar />
-			<div className="mx-auto flex max-w-[850px] items-center gap-2 px-4 sm:px-0">
+			<Link
+				href="/profile"
+				className="mx-auto flex max-w-[850px] items-center gap-2 px-4 sm:px-0"
+			>
 				<FiChevronLeft className="fill-[#2D9CDB]" />
 				<p className="text-[#2D9CDB]">Back</p>
-			</div>
+			</Link>
 			<div className="mx-auto mb-12 mt-6 max-w-[850px] p-4 sm:rounded-lg sm:border sm:border-[#E0E0E0] sm:p-8">
 				<div>
 					<h1 className="text-[24px]">Change Info</h1>

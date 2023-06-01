@@ -11,7 +11,7 @@ export default async function handler(
 	try {
 		switch (req.method) {
 			case "POST":
-				const { email, password, csrfToken } = req.body;
+				const { email, password } = req.body;
 
 				if (!(email && password && password.length >= 1)) {
 					res.status(400).json({

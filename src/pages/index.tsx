@@ -8,6 +8,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Home() {
 	const router = useRouter();
@@ -24,17 +25,20 @@ export default function Home() {
 		e: React.FormEvent<HTMLFormElement>
 	) => {
 		e.preventDefault();
-		const callbackUrl = (router.query?.callbackUrl as string) ?? "/profile";
 
-		console.log("hello");
-		signIn("credentials", {
+		const result = await signIn("credentials", {
 			callbackUrl: `${window.location.origin}/profile`,
-			// redirect: false,
+			redirect: false,
 			email,
 			password,
 		});
 
-		// router.push("/profile");
+		if (!result?.ok) {
+			toast.remove();
+			toast.error("Invalid username or password");
+		}
+
+		router.push("/profile");
 	};
 
 	const getSessionHandler = async () => {
@@ -51,7 +55,6 @@ export default function Home() {
 
 	return (
 		<main className="flex items-center justify-center px-4 py-6 sm:min-h-screen ">
-			<button onClick={getSessionHandler}>get session</button>
 			<div className="flex w-full flex-col justify-center gap-8  rounded-xl border-[#BDBDBD] sm:h-[545px] sm:w-[475px] sm:border-[1px] sm:px-16">
 				<Image
 					src="/devchallenges.svg"
@@ -109,7 +112,10 @@ export default function Home() {
 					<p className="mt-2 text-[14px] text-[#828282]">
 						Don&#39;t have an account yet?{" "}
 						<Link href="register">
-							<span className="text-[#2D9CDB] hover:underline">
+							<span
+								onClick={() => toast.remove()}
+								className="text-[#2D9CDB] hover:underline"
+							>
 								Register
 							</span>
 						</Link>
@@ -119,3 +125,26 @@ export default function Home() {
 		</main>
 	);
 }
+
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+// 	const session = await getServerSession(
+// 		context.req,
+// 		context.res,
+// 		authOptions
+// 	);
+
+// 	if (!session) {
+// 		return {
+// 			redirect: {
+// 				destination: "/",
+// 				permanent: false,
+// 			},
+// 		};
+// 	}
+
+// 	return {
+// 		props: {
+// 			session: JSON.parse(JSON.stringify(session)),
+// 		},
+// 	};
+// }
