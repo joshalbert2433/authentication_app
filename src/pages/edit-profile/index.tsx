@@ -1,11 +1,125 @@
 import ProfileNavbar from "@/components/ProfileNavbar";
-import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import { getServerSession } from "next-auth/next";
+import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { IoMdCamera } from "react-icons/io";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { getUserData } from "../api/userAPI";
+import { removeEmptyFields } from "@/utils/removeEmptyFields";
+import {
+	fetchUserData,
+	selectUserData,
+	selectLoadingStatus,
+	selectError,
+} from "../../redux/userSlice";
+import { GetServerSidePropsContext } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { toast } from "react-hot-toast";
 
-function index() {
+interface UserInfo {
+	name: string;
+	bio: string;
+	phone: string;
+	email: string;
+	password: string;
+}
+
+const Index: React.FC = () => {
+	const { data: session } = useSession();
+
+	const dispatch: AppDispatch = useDispatch<AppDispatch>();
+	const userData = useSelector(selectUserData);
+	const loading = useSelector(selectLoadingStatus);
+	const error = useSelector(selectError);
+
+	const schema = yup.object().shape({
+		name: yup.string().required("Required"),
+		bio: yup.string().required("Required").min(10, "Minimum of 10 letters"),
+		phone: yup
+			.string()
+			.typeError("Phone my be number only!")
+			.required("Required"),
+		email: yup.string().required("Required").email("Email must be valid"),
+		password: yup.string(),
+	});
+
+	const {
+		register,
+		reset,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+	} = useForm<UserInfo>({
+		resolver: yupResolver(schema),
+	});
+
+	useMemo(() => {
+		// Fetch user data when the component mounts
+
+		if (!userData) {
+			let sessionEmail = session?.user?.email as string;
+			dispatch(fetchUserData(sessionEmail));
+			console.log(userData, "userData");
+		}
+
+		//eslint-disable-next-line
+	}, [dispatch, reset]);
+
+	useEffect(() => {
+		if (userData) {
+			setValue("name", userData?.name);
+			setValue("bio", userData?.bio);
+			setValue("phone", userData?.phone);
+			setValue("email", userData?.email);
+		}
+		//eslint-disable-next-line
+	}, [setValue, userData]);
+
+	//TODO: USER FORM UPLOAD PICTURE
+
+	//TODO: FIX DROPDOWN NAVBAR
+
+	//TODO: ADD DEV CHALLENGES MARK
+
+	//TODO: REMOVE UNNECESSARY PACKAGE AND CODES
+
+	const onSubmit: SubmitHandler<UserInfo> = async (userInput: UserInfo) => {
+		const { password, ...rest } = userInput;
+
+		const filteredData = userInput.password.length === 0 ? rest : userInput;
+
+		console.log(filteredData);
+
+		try {
+			const response = await fetch("/api/user/update", {
+				method: "PATCH",
+				body: JSON.stringify(filteredData),
+				headers: {
+					"Content-type": "application/json",
+				},
+			});
+			const data = await response.json();
+			if (data.error) {
+				return toast.error(data.message);
+			}
+			if (!data.error) {
+				reset({ password: "" });
+				dispatch(fetchUserData(userInput.email));
+				toast.success(data.message);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div>
 			<ProfileNavbar />
@@ -42,64 +156,134 @@ function index() {
 						CHANGE PHOTO
 					</p>
 				</div>
-				<form noValidate className="space-y-6">
+				<form
+					noValidate
+					className="space-y-6"
+					onSubmit={handleSubmit(onSubmit)}
+					autoComplete="off"
+				>
 					<div className="flex flex-col">
 						<label htmlFor="name">Name</label>
 						<input
 							type="text"
-							name="name"
 							id="name"
 							placeholder="Enter your name..."
-							className="rounded-lg border border-black p-4 text-[13px]"
+							className={`rounded-lg border border-black p-4 text-[13px] outline-none
+                            ${errors.name && "border-red-500"}
+                            `}
+							{...register("name")}
 						/>
+						{errors.name && (
+							<p className="text-red-500">
+								{errors.name?.message?.toString()}
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="bio">Bio</label>
 						<textarea
-							name="bio"
 							id="bio"
 							placeholder="Enter your bio..."
-							className="h-[100px] resize-none rounded-lg border border-black p-4 text-[13px]"
+							className={`h-[100px] resize-none rounded-lg border border-black p-4 text-[13px] outline-none
+                            ${errors.bio && "border-red-500"}
+                            `}
+							{...register("bio")}
 						></textarea>
+						{errors.bio && (
+							<p className="text-red-500">
+								{errors.bio?.message?.toString()}
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="phone">Phone</label>
 						<input
 							type="text"
-							name="phone"
 							id="phone"
 							placeholder="Enter your phone number..."
-							className="rounded-lg border border-black p-4 text-[13px]"
+							className={`rounded-lg border border-black p-4 text-[13px] outline-none
+                            ${errors.phone && "border-red-500"}
+                            `}
+							{...register("phone")}
 						/>
+						{errors.phone && (
+							<p className="text-red-500">
+								{errors.phone?.message?.toString()}
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="phone">Email</label>
 						<input
 							type="email"
-							name="email"
 							id="email"
+							disabled
 							placeholder="Enter your phone email..."
-							className="rounded-lg border border-black p-4 text-[13px]"
+							className={`text-[13px]outline-none rounded-lg border border-black bg-gray-100 p-4 text-gray-400
+                            ${errors.email && "border-red-500"}
+                            `}
+							autoComplete="off"
+							{...register("email")}
 						/>
+						{errors.email && (
+							<p className="text-red-500">
+								{errors.email?.message?.toString()}
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col">
 						<label htmlFor="phone">Password</label>
 						<input
 							type="password"
-							name="password"
 							id="password"
-							placeholder="Enter your phone password..."
-							className="rounded-lg border border-black p-4 text-[13px]"
+							placeholder="Enter your new password..."
+							className={`rounded-lg border border-black p-4 text-[13px]
+                            ${errors.password && "border-red-500"}
+                            
+                            `}
+							autoComplete="off"
+							{...register("password")}
 						/>
+						{errors.password && (
+							<p className="text-red-500">
+								{errors.password?.message?.toString()}
+							</p>
+						)}
 					</div>
 
-					<button className="rounded-lg bg-[#2F80ED] px-6 py-2 font-medium text-white">
+					<button
+						type="submit"
+						className="rounded-lg bg-[#2F80ED] px-6 py-2 font-medium text-white"
+					>
 						Save
 					</button>
 				</form>
 			</div>
 		</div>
 	);
-}
+};
 
-export default index;
+export default Index;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const session = await getServerSession(
+		context.req,
+		context.res,
+		authOptions
+	);
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session: JSON.parse(JSON.stringify(session)),
+		},
+	};
+}

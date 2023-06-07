@@ -38,6 +38,8 @@ export default function Home() {
 			toast.error("Invalid username or password");
 		}
 
+		console.log(result);
+
 		router.push("/profile");
 	};
 

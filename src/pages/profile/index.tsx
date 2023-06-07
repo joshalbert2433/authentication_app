@@ -1,22 +1,42 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+
 import Image from "next/image";
 import ProfileNavbar from "@/components/ProfileNavbar";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import Link from "next/link";
-import type {
-	NextApiRequest,
-	NextApiResponse,
-	GetServerSideProps,
-	GetServerSidePropsContext,
-	GetServerSidePropsResult,
-} from "next";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import {
+	fetchUserData,
+	selectUserData,
+	selectLoadingStatus,
+	selectError,
+} from "../../redux/userSlice";
+import type { GetServerSidePropsContext } from "next";
 
-function Index() {
+const Index: React.FC = () => {
 	const { data: session } = useSession();
 
-	console.log(session);
+	const dispatch: AppDispatch = useDispatch<AppDispatch>();
+	const userData = useSelector(selectUserData);
+	const loading = useSelector(selectLoadingStatus);
+	const error = useSelector(selectError);
+
+	useMemo(() => {
+		// Fetch user data when the component mounts
+		if (!userData) {
+			let sessionEmail = session?.user?.email as string;
+			console.log(sessionEmail);
+			dispatch(fetchUserData(sessionEmail));
+			console.log(userData, "userData");
+		}
+		//eslint-disable-next-line
+	}, [dispatch]);
+
+	console.log(userData);
+
 	return (
 		<div>
 			<ProfileNavbar />
@@ -61,7 +81,7 @@ function Index() {
 						<p className="text-[13px] font-medium text-[#BDBDBD] sm:w-[250px]">
 							NAME
 						</p>
-						<p>Xanthe Neal</p>
+						<p>{userData?.name ?? "No name yet"}</p>
 					</div>
 				</div>
 
@@ -72,8 +92,7 @@ function Index() {
 						</p>
 						{/* <p  className="w-[200px] text-ellipsis">I am a software developer...</p> */}
 						<p className="line-clamp-1 w-[200px] text-right sm:line-clamp-none sm:w-auto sm:text-left">
-							I am a software developer and a big fan of
-							devchallenges...
+							{userData?.bio ?? "No bio yet"}
 						</p>
 					</div>
 				</div>
@@ -82,7 +101,7 @@ function Index() {
 						<p className="text-[13px] font-medium text-[#BDBDBD] sm:w-[250px]">
 							EMAIL
 						</p>
-						<p>xanthe.neal@gmail.com</p>
+						<p>{userData?.email}</p>
 					</div>
 				</div>
 				<div className="border-b">
@@ -96,7 +115,7 @@ function Index() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Index;
 
